@@ -1,11 +1,11 @@
 import OpenAI from 'openai';
-import { 
-  JobData, 
-  UserProfile, 
-  DocumentType, 
-  SupportedLanguage, 
+import {
+  JobData,
+  UserProfile,
+  DocumentType,
+  SupportedLanguage,
   GeneratedDocument,
-  DocumentsResponse 
+  DocumentsResponse,
 } from '@./shared-types';
 import { getLanguageInstructions } from '../utils/languageDetection';
 
@@ -29,10 +29,10 @@ export async function generateDocuments({
   jobData,
   profile,
   type,
-  language
+  language,
 }: GenerateDocumentsParams): Promise<DocumentsResponse> {
   const result: DocumentsResponse = {
-    success: true
+    success: true,
   };
 
   try {
@@ -43,18 +43,22 @@ export async function generateDocuments({
         type: 'cv',
         language,
         wordCount: cvContent.split(' ').length,
-        generatedAt: new Date().toISOString()
+        generatedAt: new Date().toISOString(),
       };
     }
 
     if (type === 'cover-letter' || type === 'both') {
-      const coverLetterContent = await generateCoverLetter(jobData, profile, language);
+      const coverLetterContent = await generateCoverLetter(
+        jobData,
+        profile,
+        language
+      );
       result.coverLetter = {
         content: coverLetterContent,
         type: 'cover-letter',
         language,
         wordCount: coverLetterContent.split(' ').length,
-        generatedAt: new Date().toISOString()
+        generatedAt: new Date().toISOString(),
       };
     }
 
@@ -63,35 +67,37 @@ export async function generateDocuments({
     console.error('Document generation failed:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error occurred'
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
     };
   }
 }
 
 async function generateCV(
-  jobData: JobData, 
-  profile: UserProfile, 
+  jobData: JobData,
+  profile: UserProfile,
   language: SupportedLanguage
 ): Promise<string> {
   const languageInstructions = getLanguageInstructions(language);
   const prompt = createCVPrompt(jobData, profile, languageInstructions);
 
-  console.log(`Generating CV in ${language} for ${jobData.title} at ${jobData.company}`);
+  console.log(
+    `Generating CV in ${language} for ${jobData.title} at ${jobData.company}`
+  );
 
   const response = await openai.chat.completions.create({
     model: DEFAULT_MODEL,
     messages: [
       {
         role: 'system',
-        content: languageInstructions.systemMessage
+        content: languageInstructions.systemMessage,
       },
       {
         role: 'user',
-        content: prompt
-      }
+        content: prompt,
+      },
     ],
     max_tokens: MAX_TOKENS,
-    temperature: TEMPERATURE
+    temperature: TEMPERATURE,
   });
 
   if (!response.choices[0]?.message?.content) {
@@ -102,31 +108,40 @@ async function generateCV(
 }
 
 async function generateCoverLetter(
-  jobData: JobData, 
-  profile: UserProfile, 
+  jobData: JobData,
+  profile: UserProfile,
   language: SupportedLanguage
 ): Promise<string> {
   const languageInstructions = getLanguageInstructions(language);
-  const prompt = createCoverLetterPrompt(jobData, profile, languageInstructions);
+  const prompt = createCoverLetterPrompt(
+    jobData,
+    profile,
+    languageInstructions
+  );
 
-  console.log(`Generating cover letter in ${language} for ${jobData.title} at ${jobData.company}`);
+  console.log(
+    `Generating cover letter in ${language} for ${jobData.title} at ${jobData.company}`
+  );
 
-  const coverLetterSystemMessage = languageInstructions.systemMessage.replace('CV writer', 'cover letter writer');
+  const coverLetterSystemMessage = languageInstructions.systemMessage.replace(
+    'CV writer',
+    'cover letter writer'
+  );
 
   const response = await openai.chat.completions.create({
     model: DEFAULT_MODEL,
     messages: [
       {
         role: 'system',
-        content: coverLetterSystemMessage
+        content: coverLetterSystemMessage,
       },
       {
         role: 'user',
-        content: prompt
-      }
+        content: prompt,
+      },
     ],
     max_tokens: MAX_TOKENS,
-    temperature: TEMPERATURE
+    temperature: TEMPERATURE,
   });
 
   if (!response.choices[0]?.message?.content) {
@@ -136,9 +151,15 @@ async function generateCoverLetter(
   return response.choices[0].message.content;
 }
 
-function createCVPrompt(jobData: JobData, profile: UserProfile, languageInstructions: any): string {
+function createCVPrompt(
+  jobData: JobData,
+  profile: UserProfile,
+  languageInstructions: any
+): string {
   return `
-Create a highly personalized CV ${languageInstructions.cvInstruction} specifically tailored for this job offer. The CV should directly address the job requirements and showcase relevant experience.
+Create a highly personalized CV ${
+    languageInstructions.cvInstruction
+  } specifically tailored for this job offer. The CV should directly address the job requirements and showcase relevant experience.
 
 JOB OFFER ANALYSIS:
 - Position: ${jobData.title}
@@ -162,10 +183,18 @@ CANDIDATE PROFILE:
 - Languages: ${profile.languages}
 
 WORK EXPERIENCE:
-${profile.experiences?.map(exp => `
-Position: ${exp.jobTitle} at ${exp.company} (${exp.startDate} - ${exp.endDate || 'Present'})
+${
+  profile.experiences
+    ?.map(
+      (exp) => `
+Position: ${exp.jobTitle} at ${exp.company} (${exp.startDate} - ${
+        exp.endDate || 'Present'
+      })
 Responsibilities: ${exp.responsibilities}
-`).join('\n') || 'No work experience provided'}
+`
+    )
+    .join('\n') || 'No work experience provided'
+}
 
 PERSONALIZATION REQUIREMENTS:
 1. **Professional Summary**: Rewrite to directly mention the target position and company, highlighting why the candidate is perfect for THIS specific role
@@ -187,42 +216,89 @@ The CV should make it immediately clear why this candidate is an excellent fit f
 `;
 }
 
-function createCoverLetterPrompt(jobData: JobData, profile: UserProfile, languageInstructions: any): string {
+function createCoverLetterPrompt(
+  jobData: JobData,
+  profile: UserProfile,
+  languageInstructions: any
+): string {
+  const currentDate = new Date().toLocaleDateString('fr-FR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
   return `
-Create a compelling, personalized cover letter ${languageInstructions.coverLetterInstruction} for this specific job application.
+Create a compelling, personalized cover letter ${
+    languageInstructions.coverLetterInstruction
+  } for this specific job application.
+
+CANDIDATE CONTACT INFORMATION (must be included at the top):
+- Full Name: ${profile.fullName}
+- Address: ${profile.address || profile.location}
+- Phone: ${profile.phone}
+- Email: ${profile.email}
+- Date: ${currentDate}
 
 JOB OFFER DETAILS:
 - Position: ${jobData.title}
 - Company: ${jobData.company}
-- Location: ${jobData.location}
+- Company Address: ${jobData.location}
 - Job Description: ${jobData.description}
 - Company Sector: ${jobData.companySector || 'Not specified'}
 
-CANDIDATE INFORMATION:
-- Name: ${profile.fullName}
+CANDIDATE PROFESSIONAL INFORMATION:
 - Current Title: ${profile.currentTitle}
 - Experience Level: ${profile.experience}
 - Key Skills: ${profile.skills}
 - Professional Summary: ${profile.summary}
-- Most Recent Experience: ${profile.experiences?.[0]?.jobTitle || 'Not specified'} at ${profile.experiences?.[0]?.company || 'Not specified'}
+- Most Recent Experience: ${
+    profile.experiences?.[0]?.jobTitle || 'Not specified'
+  } at ${profile.experiences?.[0]?.company || 'Not specified'}
 
 COVER LETTER REQUIREMENTS:
+
+**HEADER FORMAT (must include):**
+1. Start with candidate's full contact information (name, address, phone, email)
+2. Add the current date
+3. Add company information and hiring manager details
+4. Include subject line mentioning the specific position
+
+**LETTER CONTENT:**
 1. **Opening**: Address the specific position and company, showing knowledge of their business
 2. **Value Proposition**: Clearly articulate why the candidate is perfect for THIS specific role
 3. **Relevant Experience**: Highlight specific experiences and achievements that match the job requirements
 4. **Company Connection**: Show understanding of the company's mission/sector and explain why you want to work there
 5. **Call to Action**: End with a strong, confident request for an interview
 
-The cover letter should:
-- Be exactly 3-4 paragraphs long
+**FORMATTING REQUIREMENTS:**
+- Start with proper business letter header including all contact information
+- Include date prominently
+- Use formal business letter structure
+- Be exactly 3-4 paragraphs long (after header)
 - ${languageInstructions.styleInstruction}
 - Include specific keywords from the job description
 - Show genuine enthusiasm for the role and company
 - Demonstrate clear value the candidate would bring
 - Be personalized and authentic, not generic
 - Include specific examples and achievements
-- End with appropriate formal closing
+- End with appropriate formal closing and signature line
 
-Format as a proper business letter with appropriate spacing and structure.
+**EXAMPLE STRUCTURE:**
+[Candidate Name]
+[Full Address]
+[Phone] | [Email]
+
+[Date]
+
+[Company Name]
+[Company Address]
+À l'attention du service RH / Hiring Manager
+
+Objet: Candidature pour le poste de [Position Title]
+
+[Letter content in 3-4 paragraphs]
+
+Cordialement,
+[Candidate Name]
 `;
 }

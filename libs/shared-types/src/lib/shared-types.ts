@@ -29,6 +29,7 @@ export interface UserProfile {
   email: string;
   phone: string;
   location: string;
+  address?: string;
   currentTitle: string;
   experience: ExperienceLevel;
   skills: string;

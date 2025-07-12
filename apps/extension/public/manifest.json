@@ -15,8 +15,9 @@
     "https://www.linkedin.com/*",
     "https://www.welcometothejungle.com/*",
     "https://www.leboncoin.fr/*",
-    "http://localhost:*",
-    "https://api.openai.com/*"
+    "http://localhost:3000/*",
+    "http://localhost:3001/*",
+    "http://localhost:8080/*"
   ],
   "content_scripts": [
     {

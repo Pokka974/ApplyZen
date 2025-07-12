@@ -55,108 +55,20 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": ".claude/settings.local.json",
-        "hash": "16489276906031025590"
-      },
-      {
         "file": ".gitignore",
-        "hash": "6746974787570063356"
+        "hash": "9905181707509059506"
       },
       {
         "file": ".prettierignore",
         "hash": "14688272390704683536"
       },
       {
-        "file": ".prettierrc",
-        "hash": "16267754514737964994"
-      },
-      {
         "file": ".vscode/extensions.json",
         "hash": "16884713733442577066"
       },
       {
-        "file": "README.md",
-        "hash": "6623332451826432553"
-      },
-      {
-        "file": "eslint.config.mjs",
-        "hash": "10770449096712831357"
-      },
-      {
-        "file": "legacy-code/CLAUDE.md",
-        "hash": "8037590371111558199"
-      },
-      {
-        "file": "legacy-code/background.js",
-        "hash": "4174572720079604545"
-      },
-      {
-        "file": "legacy-code/config.js",
-        "hash": "11666269213150020648"
-      },
-      {
-        "file": "legacy-code/content/scraper.js",
-        "hash": "7019279209134657068"
-      },
-      {
-        "file": "legacy-code/icon.png",
-        "hash": "3476787590595312474"
-      },
-      {
-        "file": "legacy-code/legacy-code/CLAUDE.md",
-        "hash": "8037590371111558199"
-      },
-      {
-        "file": "legacy-code/legacy-code/background.js",
-        "hash": "4174572720079604545"
-      },
-      {
-        "file": "legacy-code/legacy-code/config.js",
-        "hash": "11666269213150020648"
-      },
-      {
-        "file": "legacy-code/legacy-code/content/scraper.js",
-        "hash": "7019279209134657068"
-      },
-      {
-        "file": "legacy-code/legacy-code/icon.png",
-        "hash": "3476787590595312474"
-      },
-      {
-        "file": "legacy-code/manifest.json",
-        "hash": "11996120053545214006"
-      },
-      {
-        "file": "legacy-code/popup.css",
-        "hash": "2500916694529531242"
-      },
-      {
-        "file": "legacy-code/popup.html",
-        "hash": "7097598179602441662"
-      },
-      {
-        "file": "legacy-code/popup.js",
-        "hash": "17258777291127625933"
-      },
-      {
-        "file": "legacy-code/profile.css",
-        "hash": "18026617086583064021"
-      },
-      {
-        "file": "legacy-code/profile.html",
-        "hash": "15540770830583908156"
-      },
-      {
-        "file": "legacy-code/profile.js",
-        "hash": "12461007494190723582"
-      },
-      {
-        "file": "nx.json",
-        "hash": "573756152371925209"
-      },
-      {
-        "file": "package-lock.json",
-        "hash": "14659404266402380069"
+        "file": ".claude/settings.local.json",
+        "hash": "16489276906031025590"
       },
       {
         "file": "package.json",
@@ -167,11 +79,94 @@
         "hash": "3244421341483603138"
       },
       {
+        "file": "eslint.config.mjs",
+        "hash": "10770449096712831357"
+      },
+      {
+        "file": "nx.json",
+        "hash": "573756152371925209"
+      },
+      {
+        "file": "README.md",
+        "hash": "14313678209790033983"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
         "file": "tsconfig.base.json",
         "hash": "460445718633920573"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "14659404266402380069"
       }
     ],
     "projectFileMap": {
+      "api": [
+        {
+          "file": "apps/api/.env.example",
+          "hash": "8851738327861677046"
+        },
+        {
+          "file": "apps/api/project.json",
+          "hash": "10441165196678887885"
+        },
+        {
+          "file": "apps/api/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/api/src/main.ts",
+          "hash": "18072657487607917815",
+          "deps": [
+            "npm:express",
+            "npm:cors",
+            "npm:helmet",
+            "npm:dotenv",
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/api/src/services/cvParser.ts",
+          "hash": "8035028124008984321",
+          "deps": [
+            "npm:openai",
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/api/src/services/documentGenerator.ts",
+          "hash": "14108160415770561698",
+          "deps": [
+            "npm:openai",
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/api/src/utils/languageDetection.ts",
+          "hash": "13634148252306360543",
+          "deps": [
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/api/tsconfig.app.json",
+          "hash": "12739603386682899461"
+        },
+        {
+          "file": "apps/api/tsconfig.json",
+          "hash": "3025378044812449119"
+        },
+        {
+          "file": "apps/api/webpack.config.js",
+          "hash": "3774360504015463941",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
       "api-e2e": [
         {
           "file": "apps/api-e2e/jest.config.ts",
@@ -250,7 +245,7 @@
         },
         {
           "file": "libs/shared-types/src/lib/shared-types.ts",
-          "hash": "16718371095944602357"
+          "hash": "1594955084377602016"
         },
         {
           "file": "libs/shared-types/tsconfig.json",
@@ -288,7 +283,15 @@
         },
         {
           "file": "apps/extension/public/manifest.json",
-          "hash": "10878599868861312170"
+          "hash": "11528003012170028798"
+        },
+        {
+          "file": "apps/extension/public/profile.html",
+          "hash": "17731040673643019234"
+        },
+        {
+          "file": "apps/extension/public/profile.js",
+          "hash": "7565991209519884418"
         },
         {
           "file": "apps/extension/src/app/app.module.css",
@@ -296,7 +299,7 @@
         },
         {
           "file": "apps/extension/src/app/app.tsx",
-          "hash": "11371341687451137471",
+          "hash": "2034498555645231710",
           "deps": [
             "npm:react",
             "shared-types"
@@ -304,7 +307,7 @@
         },
         {
           "file": "apps/extension/src/app/components/DownloadOptions.tsx",
-          "hash": "12234631409426680837",
+          "hash": "1319679531714636645",
           "deps": [
             "npm:react",
             "shared-types"
@@ -312,7 +315,7 @@
         },
         {
           "file": "apps/extension/src/app/components/JobDetected.tsx",
-          "hash": "1351152581145892353",
+          "hash": "11850734838160606018",
           "deps": [
             "npm:react",
             "shared-types"
@@ -334,9 +337,10 @@
         },
         {
           "file": "apps/extension/src/app/components/ProfileSetup.tsx",
-          "hash": "10375754846133028446",
+          "hash": "17695752928253063571",
           "deps": [
-            "npm:react"
+            "npm:react",
+            "shared-types"
           ]
         },
         {
@@ -349,7 +353,7 @@
         },
         {
           "file": "apps/extension/src/main.tsx",
-          "hash": "6013565506688027592",
+          "hash": "8562349744085909379",
           "deps": [
             "npm:react",
             "npm:react-dom"
@@ -357,7 +361,7 @@
         },
         {
           "file": "apps/extension/src/styles.css",
-          "hash": "5195668842064076916"
+          "hash": "9447975084200468649"
         },
         {
           "file": "apps/extension/tsconfig.app.json",
@@ -369,66 +373,11 @@
         },
         {
           "file": "apps/extension/vite.config.ts",
-          "hash": "2983419925354096534",
+          "hash": "8968215258298498595",
           "deps": [
             "npm:vite",
             "npm:@vitejs/plugin-react",
             "npm:@nx/vite"
-          ]
-        }
-      ],
-      "api": [
-        {
-          "file": "apps/api/.env.example",
-          "hash": "8851738327861677046"
-        },
-        {
-          "file": "apps/api/project.json",
-          "hash": "10441165196678887885"
-        },
-        {
-          "file": "apps/api/src/assets/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/api/src/main.ts",
-          "hash": "4361836241686660970",
-          "deps": [
-            "npm:express",
-            "npm:cors",
-            "npm:helmet",
-            "npm:dotenv",
-            "shared-types"
-          ]
-        },
-        {
-          "file": "apps/api/src/services/documentGenerator.ts",
-          "hash": "9235300616998582337",
-          "deps": [
-            "npm:openai",
-            "shared-types"
-          ]
-        },
-        {
-          "file": "apps/api/src/utils/languageDetection.ts",
-          "hash": "13634148252306360543",
-          "deps": [
-            "shared-types"
-          ]
-        },
-        {
-          "file": "apps/api/tsconfig.app.json",
-          "hash": "12739603386682899461"
-        },
-        {
-          "file": "apps/api/tsconfig.json",
-          "hash": "3025378044812449119"
-        },
-        {
-          "file": "apps/api/webpack.config.js",
-          "hash": "3774360504015463941",
-          "deps": [
-            "npm:@nx/webpack"
           ]
         }
       ]

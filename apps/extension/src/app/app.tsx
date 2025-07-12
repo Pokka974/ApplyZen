@@ -123,11 +123,14 @@ export function App() {
 
       const documents = await response.json();
       
+      console.log('API Response:', documents);
+      console.log('Documents data:', documents.data);
+      
       setState(prev => ({
         ...prev,
         isLoading: false,
         status: 'Documents générés avec succès!',
-        generatedDocuments: documents,
+        generatedDocuments: documents.data || documents,
       }));
       
     } catch (error) {
@@ -186,7 +189,16 @@ export function App() {
         )}
 
         {state.showProfileSetup && (
-          <ProfileSetup onSetupProfile={openProfileManager} />
+          <ProfileSetup 
+            onSetupProfile={openProfileManager}
+            onSaveProfile={(profile) => {
+              setState(prev => ({ 
+                ...prev, 
+                userProfile: profile,
+                showProfileSetup: false 
+              }));
+            }}
+          />
         )}
       </main>
 

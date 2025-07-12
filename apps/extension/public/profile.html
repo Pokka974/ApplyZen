@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApplyZen - Gestion du Profil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .main {
+            padding: 24px;
+        }
+
+        .import-section {
+            margin-bottom: 32px;
+        }
+
+        .import-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .import-card h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .import-card p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .import-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .file-upload, .text-option {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-primary, .btn-secondary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .import-card .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        .import-card .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .import-card .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .import-card .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .upload-status {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .upload-status.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #16a34a;
+        }
+
+        .upload-status.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #dc2626;
+        }
+
+        .upload-status.loading {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 24px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 16px;
+            color: #6b7280;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        input, select, textarea {
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        small {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .experience-item {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+        }
+
+        .experience-item .remove-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .experience-item .remove-btn:hover {
+            background: #fecaca;
+        }
+
+        .btn-primary:not(.import-card .btn-primary) {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:not(.import-card .btn-primary):hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary:not(.import-card .btn-secondary) {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:not(.import-card .btn-secondary):hover {
+            background: #e5e7eb;
+        }
+
+        .btn-icon {
+            font-size: 16px;
+        }
+
+        .form-actions {
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                margin: 0;
+                box-shadow: none;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .main {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <button class="back-btn" id="back-btn">←</button>
+            <h1>Gestion du Profil</h1>
+        </header>
+
+        <main class="main">
+            <section class="import-section">
+                <div class="import-card">
+                    <h2>📁 Importer votre CV</h2>
+                    <p>Téléchargez votre CV existant pour extraire automatiquement vos informations</p>
+                    
+                    <div class="import-options">
+                        <div class="file-upload">
+                            <button class="btn-primary" id="upload-btn">
+                                <span class="btn-icon">📎</span>
+                                Télécharger un fichier PDF
+                            </button>
+                            <input type="file" id="cv-upload" accept=".pdf" style="display: none;">
+                        </div>
+                        
+                        <div class="text-option">
+                            <button class="btn-secondary" id="text-import-btn">
+                                <span class="btn-icon">📝</span>
+                                Coller le texte de votre CV
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-status" id="upload-status"></div>
+                </div>
+                
+                <div class="divider">
+                    <span>ou remplissez manuellement</span>
+                </div>
+            </section>
+
+            <form class="profile-form" id="profile-form">
+                <section class="section">
+                    <h2>Informations personnelles</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Nom complet *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Téléphone</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Localisation *</label>
+                            <input type="text" id="location" name="location" placeholder="Paris, France" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Adresse complète</label>
+                        <textarea id="address" name="address" placeholder="123 rue de la Paix, 75001 Paris, France"></textarea>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2>Informations professionnelles</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currentTitle">Poste actuel *</label>
+                            <input type="text" id="currentTitle" name="currentTitle" placeholder="Développeur Frontend" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">Niveau d'expérience *</label>
+                            <select id="experience" name="experience" required>
+                                <option value="0-1">0-1 ans</option>
+                                <option value="1-3">1-3 ans</option>
+                                <option value="3-5">3-5 ans</option>
+                                <option value="5-10">5-10 ans</option>
+                                <option value="10+">10+ ans</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="skills">Compétences techniques *</label>
+                        <textarea id="skills" name="skills" placeholder="JavaScript, React, Node.js, TypeScript..." required></textarea>
+                        <small>Séparez les compétences par des virgules</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="summary">Résumé professionnel *</label>
+                        <textarea id="summary" name="summary" placeholder="Développeur passionné avec 3 ans d'expérience..." required></textarea>
+                        <small>2-3 phrases décrivant votre profil professionnel</small>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2>Formation et langues</h2>
+                    
+                    <div class="form-group">
+                        <label for="education">Formation principale *</label>
+                        <input type="text" id="education" name="education" placeholder="Master en Informatique, Université Paris-Sorbonne" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="languages">Langues parlées</label>
+                        <input type="text" id="languages" name="languages" placeholder="Français (natif), Anglais (courant), Espagnol (intermédiaire)">
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2>Expériences professionnelles</h2>
+                    <div id="experiences-container"></div>
+                    <button type="button" class="btn-secondary" id="add-experience">
+                        <span class="btn-icon">➕</span>
+                        Ajouter une expérience
+                    </button>
+                </section>
+
+                <section class="section">
+                    <h2>Configuration API</h2>
+                    <div class="form-group">
+                        <label for="openaiKey">Clé API OpenAI (optionnel)</label>
+                        <input type="password" id="openaiKey" name="openaiKey" placeholder="sk-...">
+                        <small>Si vous avez votre propre clé OpenAI, vous pouvez l'utiliser ici</small>
+                    </div>
+                </section>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <span class="btn-icon">💾</span>
+                        Sauvegarder le profil
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>
