@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "ApplyZen - Générateur de Candidatures",
+  "version": "0.2.0",
+  "description": "Générez CV, lettres et emails personnalisés en 1 clic sur les offres d'emploi.",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "icon.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["activeTab", "storage", "scripting", "tabs"],
+  "host_permissions": [
+    "https://www.linkedin.com/*",
+    "https://www.welcometothejungle.com/*",
+    "https://www.leboncoin.fr/*",
+    "http://localhost:*",
+    "https://api.openai.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/*"],
+      "js": ["content/scraper.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["*.js", "*.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

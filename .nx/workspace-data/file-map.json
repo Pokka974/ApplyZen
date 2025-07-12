@@ -1,0 +1,437 @@
+{
+  "version": "6.0",
+  "nxVersion": "21.2.3",
+  "pathMappings": {
+    "@./shared-types": [
+      "libs/shared-types/src/index.ts"
+    ],
+    "@applyzen/shared-types": [
+      "libs/shared-types/src/index.ts"
+    ]
+  },
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/react/router-plugin",
+      "options": {
+        "buildTargetName": "build",
+        "devTargetName": "dev",
+        "startTargetName": "start",
+        "watchDepsTargetName": "watch-deps",
+        "buildDepsTargetName": "build-deps",
+        "typecheckTargetName": "typecheck"
+      }
+    },
+    {
+      "name": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "devTargetName": "dev",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "name": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "name": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".claude/settings.local.json",
+        "hash": "16489276906031025590"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "6746974787570063356"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "14688272390704683536"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "16884713733442577066"
+      },
+      {
+        "file": "README.md",
+        "hash": "6623332451826432553"
+      },
+      {
+        "file": "eslint.config.mjs",
+        "hash": "10770449096712831357"
+      },
+      {
+        "file": "legacy-code/CLAUDE.md",
+        "hash": "8037590371111558199"
+      },
+      {
+        "file": "legacy-code/background.js",
+        "hash": "4174572720079604545"
+      },
+      {
+        "file": "legacy-code/config.js",
+        "hash": "11666269213150020648"
+      },
+      {
+        "file": "legacy-code/content/scraper.js",
+        "hash": "7019279209134657068"
+      },
+      {
+        "file": "legacy-code/icon.png",
+        "hash": "3476787590595312474"
+      },
+      {
+        "file": "legacy-code/legacy-code/CLAUDE.md",
+        "hash": "8037590371111558199"
+      },
+      {
+        "file": "legacy-code/legacy-code/background.js",
+        "hash": "4174572720079604545"
+      },
+      {
+        "file": "legacy-code/legacy-code/config.js",
+        "hash": "11666269213150020648"
+      },
+      {
+        "file": "legacy-code/legacy-code/content/scraper.js",
+        "hash": "7019279209134657068"
+      },
+      {
+        "file": "legacy-code/legacy-code/icon.png",
+        "hash": "3476787590595312474"
+      },
+      {
+        "file": "legacy-code/manifest.json",
+        "hash": "11996120053545214006"
+      },
+      {
+        "file": "legacy-code/popup.css",
+        "hash": "2500916694529531242"
+      },
+      {
+        "file": "legacy-code/popup.html",
+        "hash": "7097598179602441662"
+      },
+      {
+        "file": "legacy-code/popup.js",
+        "hash": "17258777291127625933"
+      },
+      {
+        "file": "legacy-code/profile.css",
+        "hash": "18026617086583064021"
+      },
+      {
+        "file": "legacy-code/profile.html",
+        "hash": "15540770830583908156"
+      },
+      {
+        "file": "legacy-code/profile.js",
+        "hash": "12461007494190723582"
+      },
+      {
+        "file": "nx.json",
+        "hash": "573756152371925209"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "14659404266402380069"
+      },
+      {
+        "file": "package.json",
+        "hash": "15151213877269673841"
+      },
+      {
+        "file": "packages/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "460445718633920573"
+      }
+    ],
+    "projectFileMap": {
+      "api-e2e": [
+        {
+          "file": "apps/api-e2e/jest.config.ts",
+          "hash": "16237957319090451515"
+        },
+        {
+          "file": "apps/api-e2e/project.json",
+          "hash": "16353701798928027840"
+        },
+        {
+          "file": "apps/api-e2e/src/api/api.spec.ts",
+          "hash": "4579662685003779048",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/api-e2e/src/support/global-setup.ts",
+          "hash": "10817858795115919263",
+          "deps": [
+            "npm:@nx/node"
+          ]
+        },
+        {
+          "file": "apps/api-e2e/src/support/global-teardown.ts",
+          "hash": "14210317125869451873",
+          "deps": [
+            "npm:@nx/node"
+          ]
+        },
+        {
+          "file": "apps/api-e2e/src/support/test-setup.ts",
+          "hash": "15521797170623961900",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/api-e2e/tsconfig.json",
+          "hash": "15443990093475294480"
+        },
+        {
+          "file": "apps/api-e2e/tsconfig.spec.json",
+          "hash": "14954872453723519891"
+        }
+      ],
+      "shared-types": [
+        {
+          "file": "libs/shared-types/README.md",
+          "hash": "13984268598373994613"
+        },
+        {
+          "file": "libs/shared-types/eslint.config.mjs",
+          "hash": "4313095032450400554",
+          "deps": [
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/shared-types/package.json",
+          "hash": "2980301220432734991",
+          "deps": [
+            "npm:tslib"
+          ]
+        },
+        {
+          "file": "libs/shared-types/project.json",
+          "hash": "10003808341076669952"
+        },
+        {
+          "file": "libs/shared-types/src/index.ts",
+          "hash": "14293687885536747193"
+        },
+        {
+          "file": "libs/shared-types/src/lib/shared-types.ts",
+          "hash": "16718371095944602357"
+        },
+        {
+          "file": "libs/shared-types/tsconfig.json",
+          "hash": "6159797437362864955"
+        },
+        {
+          "file": "libs/shared-types/tsconfig.lib.json",
+          "hash": "15798669420171897096"
+        }
+      ],
+      "extension": [
+        {
+          "file": "apps/extension/index.html",
+          "hash": "2026300156321788109"
+        },
+        {
+          "file": "apps/extension/project.json",
+          "hash": "7653198794618502229"
+        },
+        {
+          "file": "apps/extension/public/background.js",
+          "hash": "10173839290569526126"
+        },
+        {
+          "file": "apps/extension/public/content/scraper.js",
+          "hash": "15213008812706414664"
+        },
+        {
+          "file": "apps/extension/public/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "apps/extension/public/icon.png",
+          "hash": "3476787590595312474"
+        },
+        {
+          "file": "apps/extension/public/manifest.json",
+          "hash": "10878599868861312170"
+        },
+        {
+          "file": "apps/extension/src/app/app.module.css",
+          "hash": "17424427509611404188"
+        },
+        {
+          "file": "apps/extension/src/app/app.tsx",
+          "hash": "11371341687451137471",
+          "deps": [
+            "npm:react",
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/extension/src/app/components/DownloadOptions.tsx",
+          "hash": "12234631409426680837",
+          "deps": [
+            "npm:react",
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/extension/src/app/components/JobDetected.tsx",
+          "hash": "1351152581145892353",
+          "deps": [
+            "npm:react",
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/extension/src/app/components/LoadingSpinner.tsx",
+          "hash": "17891206431021940578",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/extension/src/app/components/NoJob.tsx",
+          "hash": "13359500222047851401",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/extension/src/app/components/ProfileSetup.tsx",
+          "hash": "10375754846133028446",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/extension/src/app/nx-welcome.tsx",
+          "hash": "2348102959109701629"
+        },
+        {
+          "file": "apps/extension/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/extension/src/main.tsx",
+          "hash": "6013565506688027592",
+          "deps": [
+            "npm:react",
+            "npm:react-dom"
+          ]
+        },
+        {
+          "file": "apps/extension/src/styles.css",
+          "hash": "5195668842064076916"
+        },
+        {
+          "file": "apps/extension/tsconfig.app.json",
+          "hash": "7232119452847825095"
+        },
+        {
+          "file": "apps/extension/tsconfig.json",
+          "hash": "2843773793157498944"
+        },
+        {
+          "file": "apps/extension/vite.config.ts",
+          "hash": "2983419925354096534",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "api": [
+        {
+          "file": "apps/api/.env.example",
+          "hash": "8851738327861677046"
+        },
+        {
+          "file": "apps/api/project.json",
+          "hash": "10441165196678887885"
+        },
+        {
+          "file": "apps/api/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/api/src/main.ts",
+          "hash": "4361836241686660970",
+          "deps": [
+            "npm:express",
+            "npm:cors",
+            "npm:helmet",
+            "npm:dotenv",
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/api/src/services/documentGenerator.ts",
+          "hash": "9235300616998582337",
+          "deps": [
+            "npm:openai",
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/api/src/utils/languageDetection.ts",
+          "hash": "13634148252306360543",
+          "deps": [
+            "shared-types"
+          ]
+        },
+        {
+          "file": "apps/api/tsconfig.app.json",
+          "hash": "12739603386682899461"
+        },
+        {
+          "file": "apps/api/tsconfig.json",
+          "hash": "3025378044812449119"
+        },
+        {
+          "file": "apps/api/webpack.config.js",
+          "hash": "3774360504015463941",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ]
+    }
+  }
+}
