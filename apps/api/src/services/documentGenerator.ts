@@ -104,7 +104,17 @@ async function generateCV(
     throw new Error('No content generated from OpenAI API');
   }
 
-  return response.choices[0].message.content;
+  // Clean the response to remove markdown code blocks
+  let content = response.choices[0].message.content.trim();
+  
+  // Remove markdown code block markers
+  if (content.startsWith('```markdown')) {
+    content = content.replace(/^```markdown\s*/, '').replace(/```\s*$/, '');
+  } else if (content.startsWith('```')) {
+    content = content.replace(/^```\s*/, '').replace(/```\s*$/, '');
+  }
+  
+  return content.trim();
 }
 
 async function generateCoverLetter(
@@ -148,7 +158,17 @@ async function generateCoverLetter(
     throw new Error('No content generated from OpenAI API');
   }
 
-  return response.choices[0].message.content;
+  // Clean the response to remove markdown code blocks
+  let content = response.choices[0].message.content.trim();
+  
+  // Remove markdown code block markers
+  if (content.startsWith('```markdown')) {
+    content = content.replace(/^```markdown\s*/, '').replace(/```\s*$/, '');
+  } else if (content.startsWith('```')) {
+    content = content.replace(/^```\s*/, '').replace(/```\s*$/, '');
+  }
+  
+  return content.trim();
 }
 
 function createCVPrompt(
@@ -282,6 +302,8 @@ COVER LETTER REQUIREMENTS:
 - Be personalized and authentic, not generic
 - Include specific examples and achievements
 - End with appropriate formal closing and signature line
+- Format as clean text without markdown formatting (no bold, italic, or headers)
+- Use proper line breaks and spacing for business letter format
 
 **EXAMPLE STRUCTURE:**
 [Candidate Name]

@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
 import { GeneratedDocument } from '@./shared-types';
 
 export async function generatePDF(content: string, fileName: string): Promise<Buffer> {
@@ -83,10 +84,11 @@ export async function generatePDF(content: string, fileName: string): Promise<Bu
         right: '15mm',
         bottom: '20mm',
         left: '15mm'
-      }
+      },
+      preferCSSPageSize: true
     });
     
-    return pdf;
+    return Buffer.from(pdf);
     
   } finally {
     if (browser) {
@@ -95,40 +97,151 @@ export async function generatePDF(content: string, fileName: string): Promise<Bu
   }
 }
 
-export function generateDOCX(content: string, fileName: string): Buffer {
-  // For now, we'll use a simple HTML to DOCX conversion
-  // In a production environment, you'd want to use a proper library like docx
+export async function generateDOCX(content: string, fileName: string): Promise<Buffer> {
+  // Parse the content and create proper DOCX document
+  const paragraphs = parseContentToParagraphs(content);
   
-  const htmlContent = `
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <style>
-        body {
-          font-family: 'Times New Roman', serif;
-          font-size: 12pt;
-          line-height: 1.15;
-          margin: 1in;
-        }
-        h1 { font-size: 16pt; font-weight: bold; margin-bottom: 12pt; }
-        h2 { font-size: 14pt; font-weight: bold; margin-bottom: 10pt; margin-top: 18pt; }
-        h3 { font-size: 12pt; font-weight: bold; margin-bottom: 8pt; margin-top: 12pt; }
-        p { margin-bottom: 6pt; }
-        .header { text-align: left; margin-bottom: 24pt; }
-        .date { margin-bottom: 12pt; }
-        .subject { font-weight: bold; margin-bottom: 12pt; }
-      </style>
-    </head>
-    <body>
-      ${markdownToHTML(content)}
-    </body>
-    </html>
-  `;
+  const doc = new Document({
+    sections: [
+      {
+        properties: {},
+        children: paragraphs,
+      },
+    ],
+  });
   
-  // Convert HTML to RTF (Rich Text Format) which can be opened by Word
-  const rtfContent = `{\\rtf1\\ansi\\deff0 {\\fonttbl {\\f0 Times New Roman;}}\\f0\\fs24 ${htmlContent.replace(/<[^>]*>/g, '').replace(/\n/g, '\\par ')}}`;
+  return await Packer.toBuffer(doc);
+}
+
+function parseContentToParagraphs(content: string): Paragraph[] {
+  const lines = content.split('\n');
+  const paragraphs: Paragraph[] = [];
   
-  return Buffer.from(rtfContent, 'utf-8');
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    
+    if (!line) {
+      // Add empty paragraph for spacing
+      paragraphs.push(new Paragraph({
+        children: [new TextRun("")],
+        spacing: { after: 200 }
+      }));
+      continue;
+    }
+    
+    // Handle headers
+    if (line.startsWith('# ')) {
+      paragraphs.push(new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun({
+          text: line.substring(2),
+          bold: true,
+          size: 32
+        })],
+        spacing: { after: 200, before: 200 }
+      }));
+    } else if (line.startsWith('## ')) {
+      paragraphs.push(new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun({
+          text: line.substring(3),
+          bold: true,
+          size: 28
+        })],
+        spacing: { after: 200, before: 200 }
+      }));
+    } else if (line.startsWith('### ')) {
+      paragraphs.push(new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        children: [new TextRun({
+          text: line.substring(4),
+          bold: true,
+          size: 24
+        })],
+        spacing: { after: 200, before: 200 }
+      }));
+    } else if (line.startsWith('**') && line.endsWith('**')) {
+      // Bold text
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({
+          text: line.substring(2, line.length - 2),
+          bold: true
+        })],
+        spacing: { after: 120 }
+      }));
+    } else if (line.startsWith('*') && line.endsWith('*')) {
+      // Italic text
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({
+          text: line.substring(1, line.length - 1),
+          italics: true
+        })],
+        spacing: { after: 120 }
+      }));
+    } else {
+      // Regular paragraph - handle inline formatting
+      const textRuns = parseInlineFormatting(line);
+      paragraphs.push(new Paragraph({
+        children: textRuns,
+        spacing: { after: 120 },
+        alignment: line.includes('@') || line.includes('|') ? AlignmentType.LEFT : AlignmentType.JUSTIFIED
+      }));
+    }
+  }
+  
+  return paragraphs;
+}
+
+function parseInlineFormatting(text: string): TextRun[] {
+  const runs: TextRun[] = [];
+  let currentText = text;
+  
+  // Simple regex for **bold** and *italic*
+  const boldRegex = /\*\*(.*?)\*\*/g;
+  const italicRegex = /\*(.*?)\*/g;
+  
+  let lastIndex = 0;
+  let match;
+  
+  // Handle bold text
+  while ((match = boldRegex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      runs.push(new TextRun(text.substring(lastIndex, match.index)));
+    }
+    runs.push(new TextRun({
+      text: match[1],
+      bold: true
+    }));
+    lastIndex = match.index + match[0].length;
+  }
+  
+  if (lastIndex < text.length) {
+    const remainingText = text.substring(lastIndex);
+    
+    // Check for italic in remaining text
+    lastIndex = 0;
+    while ((match = italicRegex.exec(remainingText)) !== null) {
+      if (match.index > lastIndex) {
+        runs.push(new TextRun(remainingText.substring(lastIndex, match.index)));
+      }
+      runs.push(new TextRun({
+        text: match[1],
+        italics: true
+      }));
+      lastIndex = match.index + match[0].length;
+    }
+    
+    if (lastIndex < remainingText.length) {
+      runs.push(new TextRun(remainingText.substring(lastIndex)));
+    }
+  }
+  
+  // If no formatting found, return simple text run
+  if (runs.length === 0) {
+    runs.push(new TextRun(text));
+  }
+  
+  return runs;
 }
 
 function markdownToHTML(markdown: string): string {

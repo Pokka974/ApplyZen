@@ -1,0 +1,191 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String?
+  avatar          String?
+  
+  // OAuth provider info
+  googleId        String?   @unique
+  facebookId      String?   @unique
+  linkedinId      String?   @unique
+  
+  // Local auth (email/password)
+  passwordHash    String?
+  emailVerified   Boolean   @default(false)
+  verificationToken String?
+  verificationExpiry DateTime?
+  
+  // Profile information
+  profile         UserProfile?
+  
+  // Subscription info
+  plan            Plan      @default(FREE)
+  planExpiry      DateTime?
+  usageCount      Int       @default(0)
+  
+  // Relations
+  jobs            Job[]
+  documents       Document[]
+  sessions        Session[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("users")
+}
+
+model UserProfile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  fullName        String?
+  phone           String?
+  location        String?
+  address         String?
+  currentTitle    String?
+  experience      ExperienceLevel?
+  skills          String?
+  summary         String?
+  education       String?
+  languages       String?
+  
+  // Work experiences as JSON
+  experiences     Json?
+  
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("user_profiles")
+}
+
+model Job {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Job information
+  title           String
+  company         String
+  logo            String?
+  location        String
+  contractTypes   String[]
+  description     String    @db.Text
+  missions        String?   @db.Text
+  requirements    String?   @db.Text
+  benefits        String?   @db.Text
+  candidates      String?   @db.Text
+  companySector   String?
+  companySize     String[]
+  companyDescription String? @db.Text
+  
+  // Job source info
+  sourceUrl       String?
+  platform        JobPlatform @default(LINKEDIN)
+  
+  // Application status
+  status          ApplicationStatus @default(PENDING)
+  appliedAt       DateTime?
+  
+  // Relations
+  documents       Document[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Prevent duplicate job applications
+  @@unique([userId, title, company])
+  @@map("jobs")
+}
+
+model Document {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobId           String
+  job             Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  
+  type            DocumentType
+  content         String    @db.Text
+  language        SupportedLanguage
+  wordCount       Int
+  
+  // File info
+  fileName        String?
+  fileSize        Int?
+  downloadCount   Int       @default(0)
+  
+  generatedAt     DateTime  @default(now())
+  
+  @@map("documents")
+}
+
+model Session {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionToken    String    @unique
+  expires         DateTime
+  
+  createdAt       DateTime  @default(now())
+  
+  @@map("sessions")
+}
+
+// Enums
+enum Plan {
+  FREE
+  PREMIUM
+  ENTERPRISE
+}
+
+enum ExperienceLevel {
+  ZERO_ONE        @map("0-1")
+  ONE_THREE       @map("1-3")
+  THREE_FIVE      @map("3-5")
+  FIVE_TEN        @map("5-10")
+  TEN_PLUS        @map("10+")
+}
+
+enum JobPlatform {
+  LINKEDIN
+  INDEED
+  GLASSDOOR
+  JOBBOARD
+  OTHER
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPLIED
+  INTERVIEW
+  REJECTED
+  ACCEPTED
+}
+
+enum DocumentType {
+  CV
+  COVER_LETTER
+  BOTH
+}
+
+enum SupportedLanguage {
+  FRENCH
+  ENGLISH
+  GERMAN
+  SPANISH
+}
