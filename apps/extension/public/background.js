@@ -19,6 +19,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true; // Keep message channel open for async responses
 });
 
+// Handle authentication state changes
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'authStateChanged') {
+    // You can handle auth state changes here if needed
+    console.log('Auth state changed:', message.isAuthenticated);
+  }
+  
+  return true;
+});
+
 // Clear badge when navigating away from job pages
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url) {

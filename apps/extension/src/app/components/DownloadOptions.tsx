@@ -114,25 +114,31 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({ documents, jobData })
           <span>{type === 'cv' ? '📄 CV Personnalisé' : '✉️ Lettre de Motivation'}</span>
           <span className="download-btn-size">{document.wordCount} mots</span>
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+          <span style={{ fontSize: '12px', color: '#666', fontWeight: '500' }}>Télécharger:</span>
           <button 
             className="download-md-btn"
             onClick={() => downloadAsMarkdown(document.content, fileName)}
+            title="Télécharger en format Markdown"
             style={{
               padding: '4px 8px',
               fontSize: '11px',
               border: '1px solid #ddd',
               background: 'white',
               borderRadius: '4px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '3px'
             }}
           >
-            .md
+            📝 MD
           </button>
           {type === 'cv' ? (
             <button 
               className="download-pdf-btn"
               onClick={() => downloadAsPDF(document.content, fileName)}
+              title="Télécharger en format PDF"
               style={{
                 padding: '4px 8px',
                 fontSize: '11px',
@@ -140,15 +146,19 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({ documents, jobData })
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '3px'
               }}
             >
-              .pdf
+              📄 PDF
             </button>
           ) : (
             <button 
               className="download-docx-btn"
               onClick={() => downloadAsWord(document.content, fileName)}
+              title="Télécharger en format Word"
               style={{
                 padding: '4px 8px',
                 fontSize: '11px',
@@ -156,10 +166,13 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({ documents, jobData })
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '3px'
               }}
             >
-              .docx
+              📝 DOCX
             </button>
           )}
         </div>
@@ -169,7 +182,7 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({ documents, jobData })
 
   return (
     <div className="download-options">
-      <h3>Documents générés</h3>
+      <h3>📥 Télécharger vos documents</h3>
       <div className="download-buttons">
         {documents.cv && createDownloadButton(documents.cv, 'cv')}
         {documents.coverLetter && createDownloadButton(documents.coverLetter, 'cover-letter')}

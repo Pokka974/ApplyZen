@@ -77,7 +77,7 @@ Thumbs.db
 legacy-code/
 
 # Nx
-.nx/cache
+.nx
 
 # Chrome extension development
 *.crx

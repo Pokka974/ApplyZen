@@ -7,6 +7,9 @@ interface JobDetectedProps {
   onGenerateCoverLetter: () => void;
   onGenerateBoth: () => void;
   isLoading: boolean;
+  checkUsageLimit?: (generationsNeeded: number) => boolean;
+  remainingGenerations?: number;
+  currentUser?: any;
 }
 
 const JobDetected: React.FC<JobDetectedProps> = ({
@@ -15,7 +18,27 @@ const JobDetected: React.FC<JobDetectedProps> = ({
   onGenerateCoverLetter,
   onGenerateBoth,
   isLoading,
+  checkUsageLimit = () => false,
+  remainingGenerations = 0,
+  currentUser,
 }) => {
+  const getLimitInfo = () => {
+    const limits = { FREE: 5, PREMIUM: 50, ENTERPRISE: 1000 };
+    const userLimit = limits[currentUser?.plan] || 5;
+    const usageCount = currentUser?.usageCount || 0;
+    return { usageCount, userLimit };
+  };
+
+  const { usageCount, userLimit } = getLimitInfo();
+  
+  // Check if each button should be disabled
+  const isCVLimitReached = checkUsageLimit(1);
+  const isCoverLetterLimitReached = checkUsageLimit(1);
+  const isBothLimitReached = checkUsageLimit(2);
+  
+  const isCVDisabled = isLoading || isCVLimitReached;
+  const isCoverLetterDisabled = isLoading || isCoverLetterLimitReached;
+  const isBothDisabled = isLoading || isBothLimitReached;
   return (
     <>
       <div className="job-info">
@@ -27,33 +50,70 @@ const JobDetected: React.FC<JobDetectedProps> = ({
           </span>
         </div>
       </div>
+      
+      {/* Usage indicator */}
+      {currentUser && (
+        <div className="usage-indicator">
+          <div className="usage-bar">
+            <div 
+              className="usage-fill" 
+              style={{ 
+                width: `${Math.min((usageCount / userLimit) * 100, 100)}%`,
+                backgroundColor: remainingGenerations === 0 ? '#ef4444' : remainingGenerations === 1 ? '#f59e0b' : '#3b82f6'
+              }}
+            ></div>
+          </div>
+          <span className="usage-text">
+            {usageCount}/{userLimit} utilisées • {remainingGenerations} restantes ({currentUser.plan})
+          </span>
+        </div>
+      )}
+      
       <div className="actions">
         <div className="generation-buttons">
           <button
-            className="btn-primary"
+            className={isCVDisabled ? "btn-primary btn-locked" : "btn-primary"}
             onClick={onGenerateCV}
-            disabled={isLoading}
+            disabled={isCVDisabled}
+            title={
+              isLoading ? "Génération en cours..." : 
+              isCVLimitReached ? "Générations insuffisantes - Passez au plan Premium" : 
+              "Consomme 1 génération"
+            }
           >
-            <span className="btn-icon">📄</span>
-            Générer un CV personnalisé
+            <span className="btn-icon">{isCVLimitReached ? '🔒' : '📄'}</span>
+            {isCVLimitReached ? 'CV - Indisponible' : 'Générer un CV personnalisé'}
+            <span className="generation-cost">+1</span>
           </button>
 
           <button
-            className="btn-primary"
+            className={isCoverLetterDisabled ? "btn-primary btn-locked" : "btn-primary"}
             onClick={onGenerateCoverLetter}
-            disabled={isLoading}
+            disabled={isCoverLetterDisabled}
+            title={
+              isLoading ? "Génération en cours..." : 
+              isCoverLetterLimitReached ? "Générations insuffisantes - Passez au plan Premium" : 
+              "Consomme 1 génération"
+            }
           >
-            <span className="btn-icon">✉️</span>
-            Générer une lettre de motivation
+            <span className="btn-icon">{isCoverLetterLimitReached ? '🔒' : '✉️'}</span>
+            {isCoverLetterLimitReached ? 'Lettre - Indisponible' : 'Générer une lettre de motivation'}
+            <span className="generation-cost">+1</span>
           </button>
 
           <button
-            className="btn-primary-accent"
+            className={isBothDisabled ? "btn-primary-accent btn-locked" : "btn-primary-accent"}
             onClick={onGenerateBoth}
-            disabled={isLoading}
+            disabled={isBothDisabled}
+            title={
+              isLoading ? "Génération en cours..." : 
+              isBothLimitReached ? "Générations insuffisantes (besoin de 2) - Passez au plan Premium" : 
+              "Consomme 2 générations"
+            }
           >
-            <span className="btn-icon">🎯</span>
-            Générer CV + Lettre
+            <span className="btn-icon">{isBothLimitReached ? '🔒' : '🎯'}</span>
+            {isBothLimitReached ? 'CV + Lettre - Indisponible' : 'Générer CV + Lettre'}
+            <span className="generation-cost">+2</span>
           </button>
         </div>
       </div>

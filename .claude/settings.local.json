@@ -5,7 +5,8 @@
       "Bash(cp:*)",
       "Bash(true)",
       "Bash(mv:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(npx --prefix apps/api prisma migrate status)"
     ],
     "deny": []
   }
