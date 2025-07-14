@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV - {{fullName}}</title>
+    <style>
+      {{css}}
+    </style>
+  </head>
+  <body>
+    <div class="cv-container">
+      <!-- Header Section -->
+      <header class="cv-header">
+        <div class="header-content">
+          <div class="name-section">
+            <h1 class="full-name">{{fullName}}</h1>
+            <p class="current-title">{{currentTitle}}</p>
+          </div>
+          <div class="contact-section">
+            <div class="contact-info">
+              <div class="contact-item">{{email}}</div>
+              <div class="contact-item">{{phone}}</div>
+              <div class="contact-item">{{location}}</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="cv-main">
+        <!-- Professional Summary -->
+        {{#if summary}}
+        <section class="cv-section summary-section">
+          <div class="section-header">
+            <h2 class="section-title">Profil Professionnel</h2>
+          </div>
+          <div class="section-content">
+            <div class="summary-content">{{summary}}</div>
+          </div>
+        </section>
+        {{/if}}
+
+        <!-- Professional Experience -->
+        <section class="cv-section experience-section">
+          <div class="section-header">
+            <h2 class="section-title">Expérience Professionnelle</h2>
+          </div>
+          <div class="section-content">{{experiences}}</div>
+        </section>
+
+        <!-- Education -->
+        <section class="cv-section education-section">
+          <div class="section-header">
+            <h2 class="section-title">Formation</h2>
+          </div>
+          <div class="section-content">{{education}}</div>
+        </section>
+
+        <!-- Skills -->
+        <section class="cv-section skills-section">
+          <div class="section-header">
+            <h2 class="section-title">Compétences</h2>
+          </div>
+          <div class="section-content">{{skills}}</div>
+        </section>
+
+        <!-- Languages -->
+        {{#if languages}}
+        <section class="cv-section languages-section">
+          <div class="section-header">
+            <h2 class="section-title">Langues</h2>
+          </div>
+          <div class="section-content">{{languages}}</div>
+        </section>
+        {{/if}}
+      </main>
+    </div>
+  </body>
+</html>

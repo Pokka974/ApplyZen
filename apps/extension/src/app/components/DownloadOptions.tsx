@@ -1,5 +1,5 @@
 import React from 'react';
-import { JobData, GeneratedDocument } from '@./shared-types';
+import { JobData, GeneratedDocument, UserProfile } from '@./shared-types';
 
 interface DownloadOptionsProps {
   documents: {
@@ -7,13 +7,42 @@ interface DownloadOptionsProps {
     coverLetter?: GeneratedDocument;
   };
   jobData: JobData;
+  userProfile?: UserProfile;
 }
 
-const DownloadOptions: React.FC<DownloadOptionsProps> = ({ documents, jobData }) => {
+const DownloadOptions: React.FC<DownloadOptionsProps> = ({ documents, jobData, userProfile }) => {
   console.log('DownloadOptions received documents:', documents);
   console.log('CV document:', documents.cv);
   console.log('Cover letter document:', documents.coverLetter);
   
+  // Generate descriptive filename for ATS optimization
+  const generateDescriptiveFilename = (documentType: 'CV' | 'COVER_LETTER'): string => {
+    const currentYear = new Date().getFullYear();
+    
+    // Use user's full name if available, otherwise fallback to email or generic
+    const userName = userProfile?.fullName || userProfile?.email?.split('@')[0] || 'CV';
+    
+    // Clean and format the name (remove special characters, replace spaces with hyphens)
+    const cleanName = userName
+      .replace(/[^a-zA-Z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+    
+    // Clean and format the job title for filename
+    const cleanJobTitle = jobData.title
+      .replace(/[^a-zA-Z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+    
+    // Create the filename based on document type
+    const docType = documentType === 'CV' ? 'CV' : 'Lettre-Motivation';
+    
+    return `${cleanName}-${docType}-${cleanJobTitle}-${currentYear}`;
+  };
+  
+  // Fallback to old filename format if needed
   const baseFileName = `${jobData.company}_${jobData.title.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().split('T')[0]}`;
 
   const downloadAsMarkdown = (content: string, fileName: string) => {
@@ -106,7 +135,8 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({ documents, jobData })
   };
 
   const createDownloadButton = (document: GeneratedDocument, type: string) => {
-    const fileName = `${baseFileName}_${type}`;
+    // Use descriptive filename for ATS optimization
+    const fileName = generateDescriptiveFilename(type === 'cv' ? 'CV' : 'COVER_LETTER');
     
     return (
       <div key={type} className="download-btn">

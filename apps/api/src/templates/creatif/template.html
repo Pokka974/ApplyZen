@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - {{fullName}}</title>
+    <style>
+        {{css}}
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <!-- Header Section -->
+        <header class="cv-header">
+            <div class="header-content">
+                <div class="name-section">
+                    <h1 class="full-name">{{fullName}}</h1>
+                    <div class="title-wrapper">
+                        <p class="current-title">{{currentTitle}}</p>
+                        <div class="title-accent"></div>
+                    </div>
+                </div>
+                <div class="contact-section">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="contact-label">Email:</span>
+                            <span class="contact-value">{{email}}</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Téléphone:</span>
+                            <span class="contact-value">{{phone}}</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Adresse:</span>
+                            <span class="contact-value">{{location}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="cv-main">
+            <!-- Summary Section -->
+            {{#if summary}}
+            <section class="cv-section summary-section">
+                <h2 class="section-title">Résumé Professionnel</h2>
+                <div class="section-content">
+                    <div class="summary-content">
+                        {{summary}}
+                    </div>
+                </div>
+            </section>
+            {{/if}}
+
+            <!-- Skills and Experience Layout -->
+            <div class="creative-grid">
+                <!-- Skills Section -->
+                <section class="cv-section skills-section">
+                    <h2 class="section-title">Compétences</h2>
+                    <div class="section-content">
+                        {{skills}}
+                    </div>
+                </section>
+
+                <!-- Experience Section -->
+                <section class="cv-section experience-section">
+                    <h2 class="section-title">Expérience Professionnelle</h2>
+                    <div class="section-content">
+                        {{experiences}}
+                    </div>
+                </section>
+            </div>
+
+            <!-- Education and Languages -->
+            <div class="bottom-grid">
+                <!-- Education Section -->
+                <section class="cv-section education-section">
+                    <h2 class="section-title">Formation</h2>
+                    <div class="section-content">
+                        {{education}}
+                    </div>
+                </section>
+
+                <!-- Languages Section -->
+                {{#if languages}}
+                <section class="cv-section languages-section">
+                    <h2 class="section-title">Langues</h2>
+                    <div class="section-content">
+                        {{languages}}
+                    </div>
+                </section>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

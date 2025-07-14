@@ -1,0 +1,75 @@
+{
+  "id": "minimaliste",
+  "name": "Minimaliste",
+  "description": "Un CV épuré et moderne avec un focus sur le contenu essentiel.",
+  "category": "minimaliste",
+  "isPremium": false,
+  "features": [
+    "Design épuré",
+    "Focus sur le contenu",
+    "Lisibilité maximale",
+    "Style minimaliste"
+  ],
+  "placeholders": [
+    {
+      "key": "fullName",
+      "label": "Nom complet",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "phone",
+      "label": "Téléphone",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "location",
+      "label": "Localisation",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "currentTitle",
+      "label": "Titre actuel",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "summary",
+      "label": "Résumé professionnel",
+      "type": "html",
+      "required": true
+    },
+    {
+      "key": "skills",
+      "label": "Compétences",
+      "type": "html",
+      "required": true
+    },
+    {
+      "key": "experiences",
+      "label": "Expériences",
+      "type": "html",
+      "required": true
+    },
+    {
+      "key": "education",
+      "label": "Formation",
+      "type": "html",
+      "required": true
+    },
+    {
+      "key": "languages",
+      "label": "Langues",
+      "type": "html",
+      "required": false
+    }
+  ]
+}

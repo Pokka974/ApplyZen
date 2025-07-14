@@ -52,7 +52,7 @@ export class JobService {
   static async saveDocuments(userId: string, jobId: string, documents: {
     cv?: GeneratedDocument;
     coverLetter?: GeneratedDocument;
-  }): Promise<void> {
+  }, templateId?: string): Promise<void> {
     try {
       const documentsToSave = [];
 
@@ -63,7 +63,8 @@ export class JobService {
           type: 'CV' as const,
           content: documents.cv.content,
           language: documents.cv.language.toUpperCase() as any,
-          wordCount: documents.cv.wordCount
+          wordCount: documents.cv.wordCount,
+          templateId: templateId || null
         });
       }
 
@@ -74,7 +75,8 @@ export class JobService {
           type: 'COVER_LETTER' as const,
           content: documents.coverLetter.content,
           language: documents.coverLetter.language.toUpperCase() as any,
-          wordCount: documents.coverLetter.wordCount
+          wordCount: documents.coverLetter.wordCount,
+          templateId: null // Cover letters don't use templates yet
         });
       }
 
@@ -100,7 +102,8 @@ export class JobService {
               language: true,
               wordCount: true,
               generatedAt: true,
-              downloadCount: true
+              downloadCount: true,
+              templateId: true
             }
           }
         },
@@ -120,8 +123,8 @@ export class JobService {
     }
   }
 
-  // Check if documents already exist for a job
-  static async getExistingDocuments(userId: string, jobTitle: string, company: string, type: DocumentType) {
+  // Check if documents already exist for a job with specific template
+  static async getExistingDocuments(userId: string, jobTitle: string, company: string, type: DocumentType, templateId?: string) {
     try {
       const job = await prisma.job.findFirst({
         where: {
@@ -132,16 +135,27 @@ export class JobService {
         include: {
           documents: {
             where: {
-              OR: [
-                { type: type === 'both' ? 'CV' : (type === 'cover-letter' ? 'COVER_LETTER' : 'CV') },
-                ...(type === 'both' ? [{ type: 'COVER_LETTER' as any }] : [])
+              AND: [
+                {
+                  OR: [
+                    { type: type === 'both' ? 'CV' : (type === 'cover-letter' ? 'COVER_LETTER' : 'CV') },
+                    ...(type === 'both' ? [{ type: 'COVER_LETTER' as any }] : [])
+                  ]
+                },
+                // Only check for template match if templateId is provided and document type is CV
+                ...(templateId && (type === 'cv' || type === 'both') ? [{ 
+                  OR: [
+                    { type: 'COVER_LETTER' as any }, // Cover letters don't use templates
+                    { AND: [{ type: 'CV' as any }, { templateId }] } // CV with specific template
+                  ]
+                }] : [])
               ]
             }
           }
         }
       });
 
-      return job?.documents || [];
+      return (job as any)?.documents || [];
     } catch (error) {
       console.error('Error checking existing documents:', error);
       return [];

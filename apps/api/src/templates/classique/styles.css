@@ -1,0 +1,374 @@
+/* Classique CV Template - Free Tier */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 11pt;
+  line-height: 1.4;
+  color: #333;
+  background-color: #ffffff;
+}
+
+.cv-container {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 15mm;
+  min-height: 297mm;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Section */
+.cv-header {
+  text-align: center;
+  border-bottom: 2px solid #2563eb;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.full-name {
+  font-size: 24pt;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.current-title {
+  font-size: 14pt;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.contact-info {
+  font-size: 10pt;
+  color: #666;
+}
+
+.contact-item {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.contact-item:not(:last-child)::after {
+  content: ' | ';
+  color: #2563eb;
+}
+
+/* Section Styles */
+.cv-section {
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+/* Main content area with space distribution */
+.cv-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Experience section grows to fill available space */
+.experience-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.experience-section .section-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.section-header {
+  margin-bottom: 6px;
+}
+
+.section-title {
+  font-size: 14pt;
+  font-weight: bold;
+  color: #2563eb;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.section-content {
+  font-size: 11pt;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Summary Section */
+.summary-content {
+  text-align: justify;
+  padding: 8px;
+  background: #f8f9fa;
+  border-left: 4px solid #2563eb;
+}
+
+/* Experience Section */
+.section-content .experience-item {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #eee;
+}
+
+.section-content .experience-item:last-child {
+  border-bottom: none;
+}
+
+.section-content .job-title {
+  font-weight: bold;
+  font-size: 12pt;
+  color: #2563eb;
+  margin-bottom: 3px;
+}
+
+.section-content .company-name {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 3px;
+}
+
+.section-content .dates {
+  float: right;
+  font-size: 10pt;
+  color: #666;
+  font-weight: bold;
+}
+
+.section-content .job-description {
+  margin-top: 8px;
+  text-align: justify;
+  clear: both;
+}
+
+/* Education Section */
+.section-content .education-item {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #eee;
+}
+
+.section-content .education-item:last-child {
+  border-bottom: none;
+}
+
+.section-content .degree {
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 3px;
+}
+
+.section-content .institution {
+  color: #666;
+  margin-bottom: 3px;
+}
+
+.section-content .education-date {
+  font-size: 10pt;
+  color: #666;
+  float: right;
+}
+
+/* Skills Section */
+.section-content .skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.section-content .skill-item {
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-left: 3px solid #2563eb;
+  font-size: 10pt;
+}
+
+/* Languages Section */
+.section-content .language-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: #f8f9fa;
+  border-left: 3px solid #2563eb;
+}
+
+.section-content .language-name {
+  font-weight: bold;
+}
+
+.section-content .language-level {
+  color: #666;
+  font-size: 10pt;
+}
+
+/* Lists */
+.section-content ul {
+  margin-left: 18px;
+  margin-bottom: 8px;
+}
+
+.section-content li {
+  margin-bottom: 3px;
+}
+
+.section-content li::marker {
+  color: #2563eb;
+}
+
+/* Print Styles - Single Page Optimization */
+@media print {
+  body {
+    background-color: white;
+    font-size: 10pt;
+    line-height: 1.3;
+  }
+
+  .cv-container {
+    margin: 0;
+    padding: 9mm;
+    max-width: none;
+    min-height: 279mm;
+    height: 279mm;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .cv-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .experience-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .experience-section .section-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .cv-header {
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+  }
+
+  .full-name {
+    font-size: 20pt;
+    margin-bottom: 3px;
+  }
+
+  .current-title {
+    font-size: 12pt;
+    margin-bottom: 5px;
+  }
+
+  .cv-section {
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+  }
+
+  .section-header {
+    margin-bottom: 3px;
+  }
+
+  .section-title {
+    font-size: 12pt;
+    margin-bottom: 3px;
+    padding-bottom: 2px;
+  }
+
+  .section-content {
+    font-size: 10pt;
+    line-height: 1.3;
+  }
+
+  .summary-content {
+    padding: 6px;
+  }
+
+  .experience-item, .education-item {
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+  }
+
+  .job-title, .degree {
+    font-size: 11pt;
+    margin-bottom: 2px;
+  }
+
+  .contact-info {
+    font-size: 9pt;
+    padding: 3px;
+  }
+
+  .skill-item, .language-item {
+    padding: 3px 6px;
+    margin-bottom: 3px;
+    font-size: 9pt;
+  }
+
+  ul {
+    margin-left: 15px;
+    margin-bottom: 3px;
+  }
+
+  li {
+    margin-bottom: 1px;
+    font-size: 10pt;
+  }
+
+  /* Prevent page breaks */
+  h1, h2, h3 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  .experience-item, .education-item {
+    page-break-inside: avoid;
+  }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .cv-container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .section-content .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-content .dates,
+  .section-content .education-date {
+    float: none;
+    display: block;
+    margin-top: 5px;
+  }
+
+  .full-name {
+    font-size: 20pt;
+  }
+
+  .current-title {
+    font-size: 12pt;
+  }
+}

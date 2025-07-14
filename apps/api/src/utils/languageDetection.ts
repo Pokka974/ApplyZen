@@ -68,28 +68,32 @@ export const detectLanguage = (description: string, title: string): SupportedLan
 export const getLanguageInstructions = (language: SupportedLanguage) => {
   const instructions = {
     'french': {
+      language: 'french' as SupportedLanguage,
       cvInstruction: 'in French',
       coverLetterInstruction: 'in French',
       styleInstruction: 'Use professional French language throughout',
-      systemMessage: 'You are an expert CV writer who creates personalized, professional CVs tailored to specific job offers. Write in professional French.'
+      systemMessage: 'You are an expert CV writer who creates personalized, professional CVs tailored to specific job offers. Write in professional French. Output ONLY the CV content in markdown format. NO conversational text, explanations, or promotional language. End with the last CV section, no additional commentary.'
     },
     'english': {
+      language: 'english' as SupportedLanguage,
       cvInstruction: 'in English',
       coverLetterInstruction: 'in English', 
       styleInstruction: 'Use professional English language throughout',
-      systemMessage: 'You are an expert CV writer who creates personalized, professional CVs tailored to specific job offers. Write in professional English.'
+      systemMessage: 'You are an expert CV writer who creates personalized, professional CVs tailored to specific job offers. Write in professional English. Output ONLY the CV content in markdown format. NO conversational text, explanations, or promotional language. End with the last CV section, no additional commentary.'
     },
     'german': {
+      language: 'german' as SupportedLanguage,
       cvInstruction: 'in German',
       coverLetterInstruction: 'in German',
       styleInstruction: 'Use professional German language throughout',
-      systemMessage: 'You are an expert CV writer who creates personalized, professional CVs tailored to specific job offers. Write in professional German.'
+      systemMessage: 'You are an expert CV writer who creates personalized, professional CVs tailored to specific job offers. Write in professional German. Output ONLY the CV content in markdown format. NO conversational text, explanations, or promotional language. End with the last CV section, no additional commentary.'
     },
     'spanish': {
+      language: 'spanish' as SupportedLanguage,
       cvInstruction: 'in Spanish',
       coverLetterInstruction: 'in Spanish',
       styleInstruction: 'Use professional Spanish language throughout',
-      systemMessage: 'You are an expert CV writer who creates personalized, professional CVs tailored to specific job offers. Write in professional Spanish.'
+      systemMessage: 'You are an expert CV writer who creates personalized, professional CVs tailored to specific job offers. Write in professional Spanish. Output ONLY the CV content in markdown format. NO conversational text, explanations, or promotional language. End with the last CV section, no additional commentary.'
     }
   };
   

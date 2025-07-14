@@ -123,6 +123,7 @@ model Document {
   content         String    @db.Text
   language        SupportedLanguage
   wordCount       Int
+  templateId      String?   // Template used for CV generation
   
   // File info
   fileName        String?

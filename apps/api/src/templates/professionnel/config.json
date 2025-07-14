@@ -1,0 +1,75 @@
+{
+  "id": "professionnel",
+  "name": "Professionnel",
+  "description": "Un CV haut de gamme pour les cadres supérieurs et dirigeants.",
+  "category": "professionnel",
+  "isPremium": true,
+  "features": [
+    "Design exécutif",
+    "Mise en page premium",
+    "Idéal pour les cadres",
+    "Présentation distinguée"
+  ],
+  "placeholders": [
+    {
+      "key": "fullName",
+      "label": "Nom complet",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "phone",
+      "label": "Téléphone",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "location",
+      "label": "Localisation",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "currentTitle",
+      "label": "Titre actuel",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "summary",
+      "label": "Résumé professionnel",
+      "type": "html",
+      "required": true
+    },
+    {
+      "key": "skills",
+      "label": "Compétences",
+      "type": "html",
+      "required": true
+    },
+    {
+      "key": "experiences",
+      "label": "Expériences",
+      "type": "html",
+      "required": true
+    },
+    {
+      "key": "education",
+      "label": "Formation",
+      "type": "html",
+      "required": true
+    },
+    {
+      "key": "languages",
+      "label": "Langues",
+      "type": "html",
+      "required": false
+    }
+  ]
+}

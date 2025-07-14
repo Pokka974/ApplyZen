@@ -7,6 +7,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import DownloadOptions from './components/DownloadOptions';
 import { AuthModal } from './components/AuthModal';
 import { UserProfile as UserProfileComponent } from './components/UserProfile';
+import TemplateSelection from './components/TemplateSelection';
 import { authService, User } from '../services/authService';
 import './app.css';
 
@@ -19,6 +20,8 @@ interface AppState {
   showProfileSetup: boolean;
   showAuthModal: boolean;
   showHistory: boolean;
+  showTemplateSelection: boolean;
+  selectedTemplateId: string | null;
   generatedDocuments: any;
 }
 
@@ -32,6 +35,8 @@ export function App() {
     showProfileSetup: false,
     showAuthModal: false,
     showHistory: false,
+    showTemplateSelection: false,
+    selectedTemplateId: localStorage.getItem('selectedTemplateId') || 'classique',
     generatedDocuments: null,
   });
 
@@ -193,6 +198,7 @@ export function App() {
           jobData: state.currentJobData,
           profile: state.userProfile,
           type,
+          templateId: state.selectedTemplateId,
         }),
       });
 
@@ -248,6 +254,32 @@ export function App() {
       ...prev, 
       currentUser: user,
       showAuthModal: false
+    }));
+  };
+
+  const handleTemplateSelection = (templateId: string) => {
+    console.log('handleTemplateSelection called with:', templateId);
+    setState(prev => ({ 
+      ...prev, 
+      selectedTemplateId: templateId,
+      showTemplateSelection: false
+    }));
+    console.log('Template selection state updated to:', templateId);
+  };
+
+  const openTemplateSelection = () => {
+    console.log('Opening template selection modal');
+    setState(prev => ({ 
+      ...prev, 
+      showTemplateSelection: true
+    }));
+  };
+
+  const closeTemplateSelection = () => {
+    console.log('Closing template selection modal');
+    setState(prev => ({ 
+      ...prev, 
+      showTemplateSelection: false
     }));
   };
 
@@ -389,6 +421,8 @@ export function App() {
             checkUsageLimit={checkUsageLimit}
             remainingGenerations={getRemainingGenerations()}
             currentUser={state.currentUser}
+            selectedTemplateId={state.selectedTemplateId}
+            onTemplateSelection={openTemplateSelection}
           />
         ) : (
           <NoJob />
@@ -402,6 +436,7 @@ export function App() {
           <DownloadOptions 
             documents={state.generatedDocuments}
             jobData={state.currentJobData!}
+            userProfile={state.userProfile}
           />
         )}
 
@@ -439,6 +474,14 @@ export function App() {
         onClose={() => setState(prev => ({ ...prev, showAuthModal: false }))}
         onSuccess={handleAuthSuccess}
       />
+
+      {state.showTemplateSelection && (
+        <TemplateSelection
+          onTemplateSelected={handleTemplateSelection}
+          selectedTemplateId={state.selectedTemplateId}
+          onClose={closeTemplateSelection}
+        />
+      )}
     </div>
   );
 }

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - {{fullName}}</title>
+    <style>
+        {{css}}
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <!-- Header Section -->
+        <header class="cv-header">
+            <div class="header-line"></div>
+            <div class="header-content">
+                <div class="name-section">
+                    <h1 class="full-name">{{fullName}}</h1>
+                    <p class="current-title">{{currentTitle}}</p>
+                </div>
+                <div class="contact-section">
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <span class="contact-label">Email</span>
+                            <span class="contact-value">{{email}}</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Téléphone</span>
+                            <span class="contact-value">{{phone}}</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Localisation</span>
+                            <span class="contact-value">{{location}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Executive Summary -->
+        <section class="cv-section executive-summary">
+            <div class="section-header">
+                <h2 class="section-title">Profil Exécutif</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+                <div class="summary-box">
+                    {{summary}}
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Core Competencies -->
+                <section class="cv-section competencies-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Compétences Clés</h2>
+                        <div class="section-line"></div>
+                    </div>
+                    <div class="section-content">
+                        <div class="competencies-grid">
+                            {{skills}}
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Languages -->
+                {{#if languages}}
+                <section class="cv-section languages-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Langues</h2>
+                        <div class="section-line"></div>
+                    </div>
+                    <div class="section-content">
+                        <div class="languages-list">
+                            {{languages}}
+                        </div>
+                    </div>
+                </section>
+                {{/if}}
+
+                <!-- Education -->
+                <section class="cv-section education-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Formation</h2>
+                        <div class="section-line"></div>
+                    </div>
+                    <div class="section-content">
+                        <div class="education-list">
+                            {{education}}
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Professional Experience -->
+                <section class="cv-section experience-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Expérience Professionnelle</h2>
+                        <div class="section-line"></div>
+                    </div>
+                    <div class="section-content">
+                        <div class="experience-list">
+                            {{experiences}}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

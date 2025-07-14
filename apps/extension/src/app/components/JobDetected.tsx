@@ -10,6 +10,8 @@ interface JobDetectedProps {
   checkUsageLimit?: (generationsNeeded: number) => boolean;
   remainingGenerations?: number;
   currentUser?: any;
+  selectedTemplateId?: string;
+  onTemplateSelection?: () => void;
 }
 
 const JobDetected: React.FC<JobDetectedProps> = ({
@@ -21,6 +23,8 @@ const JobDetected: React.FC<JobDetectedProps> = ({
   checkUsageLimit = () => false,
   remainingGenerations = 0,
   currentUser,
+  selectedTemplateId = 'classique',
+  onTemplateSelection,
 }) => {
   const getLimitInfo = () => {
     const limits = { FREE: 5, PREMIUM: 50, ENTERPRISE: 1000 };
@@ -51,21 +55,20 @@ const JobDetected: React.FC<JobDetectedProps> = ({
         </div>
       </div>
       
-      {/* Usage indicator */}
-      {currentUser && (
-        <div className="usage-indicator">
-          <div className="usage-bar">
-            <div 
-              className="usage-fill" 
-              style={{ 
-                width: `${Math.min((usageCount / userLimit) * 100, 100)}%`,
-                backgroundColor: remainingGenerations === 0 ? '#ef4444' : remainingGenerations === 1 ? '#f59e0b' : '#3b82f6'
-              }}
-            ></div>
+
+      {/* Template selection */}
+      {onTemplateSelection && (
+        <div className="template-selection-info">
+          <div className="template-current">
+            <span className="template-label">Template sélectionné:</span>
+            <span className="template-name">{selectedTemplateId || 'Classique'}</span>
           </div>
-          <span className="usage-text">
-            {usageCount}/{userLimit} utilisées • {remainingGenerations} restantes ({currentUser.plan})
-          </span>
+          <button 
+            className="btn-secondary template-select-btn"
+            onClick={onTemplateSelection}
+          >
+            Changer le template
+          </button>
         </div>
       )}
       

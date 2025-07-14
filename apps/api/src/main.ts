@@ -15,6 +15,7 @@ import passport from './config/passport';
 import { requireAuth, checkUsageLimit, incrementUsage } from './middleware/auth';
 import authRoutes from './routes/auth';
 import jobRoutes from './routes/jobs';
+import templateRoutes from './routes/templates';
 import { JobService } from './services/jobService';
 
 // Load environment variables
@@ -75,6 +76,7 @@ app.use(passport.session());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/templates', templateRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -189,7 +191,7 @@ app.get('/auth-failed', (req, res) => {
 
 app.post('/api/generate', requireAuth, checkUsageLimit, async (req, res) => {
   try {
-    const { jobData, profile, type }: DocumentGenerationRequest = req.body;
+    const { jobData, profile, type, templateId }: DocumentGenerationRequest = req.body;
 
     if (!jobData || !profile || !type) {
       return res.status(400).json({
@@ -203,12 +205,13 @@ app.post('/api/generate', requireAuth, checkUsageLimit, async (req, res) => {
     
     console.log(`Generating ${type} in ${language} for job: ${jobData.title} at ${jobData.company}`);
 
-    // Check if documents already exist for this job
+    // Check if documents already exist for this job with the same template
     const existingDocs = await JobService.getExistingDocuments(
       req.user!.id,
       jobData.title,
       jobData.company,
-      type
+      type,
+      templateId
     );
 
     if (existingDocs.length > 0) {
@@ -247,12 +250,13 @@ app.post('/api/generate', requireAuth, checkUsageLimit, async (req, res) => {
       jobData,
       profile,
       type,
-      language
+      language,
+      templateId
     });
 
     // Save job and documents to database
     const jobId = await JobService.saveJob(req.user!.id, jobData);
-    await JobService.saveDocuments(req.user!.id, jobId, result);
+    await JobService.saveDocuments(req.user!.id, jobId, result, templateId);
 
     // Increment user usage count based on documents generated
     const documentsGenerated = (result.cv ? 1 : 0) + (result.coverLetter ? 1 : 0);

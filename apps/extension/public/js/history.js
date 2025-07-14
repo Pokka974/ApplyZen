@@ -211,8 +211,17 @@ class HistoryManager {
             // Create document badge
             const badge = window.document.createElement('div');
             badge.className = `document-badge ${typeClass}`;
-            badge.title = `Généré le ${generatedDate} - ${document.wordCount} mots`;
-            badge.textContent = `📄 ${typeLabel} (${document.language.toLowerCase()})`;
+            
+            // Build the label with template info for CVs
+            let badgeText = `📄 ${typeLabel} (${document.language.toLowerCase()})`;
+            if (document.type === 'CV' && document.templateId) {
+                // Capitalize first letter of template name
+                const templateName = document.templateId.charAt(0).toUpperCase() + document.templateId.slice(1);
+                badgeText = `📄 ${typeLabel} - ${templateName} (${document.language.toLowerCase()})`;
+            }
+            
+            badge.title = `Généré le ${generatedDate} - ${document.wordCount} mots${document.templateId ? ' - Template: ' + document.templateId : ''}`;
+            badge.textContent = badgeText;
             badge.style.cursor = 'pointer';
             badge.addEventListener('click', () => this.viewDocument(document.id));
             
@@ -318,7 +327,12 @@ class HistoryManager {
             header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;';
             
             const title = window.document.createElement('h2');
-            title.textContent = `${typeLabel} - ${document.job.title} chez ${document.job.company}`;
+            let titleText = `${typeLabel} - ${document.job.title} chez ${document.job.company}`;
+            if (document.type === 'CV' && document.templateId) {
+                const templateName = document.templateId.charAt(0).toUpperCase() + document.templateId.slice(1);
+                titleText = `${typeLabel} (${templateName}) - ${document.job.title} chez ${document.job.company}`;
+            }
+            title.textContent = titleText;
             
             const closeBtn = window.document.createElement('button');
             closeBtn.style.cssText = 'background: none; border: none; font-size: 24px; cursor: pointer;';
@@ -331,7 +345,11 @@ class HistoryManager {
             // Create meta info
             const metaInfo = window.document.createElement('p');
             metaInfo.style.cssText = 'color: #64748b; margin-bottom: 20px;';
-            metaInfo.textContent = `Généré le ${generatedDate} • ${document.wordCount} mots • ${document.language}`;
+            let metaText = `Généré le ${generatedDate} • ${document.wordCount} mots • ${document.language}`;
+            if (document.type === 'CV' && document.templateId) {
+                metaText += ` • Template: ${document.templateId}`;
+            }
+            metaInfo.textContent = metaText;
             
             // Create content area
             const contentArea = window.document.createElement('div');

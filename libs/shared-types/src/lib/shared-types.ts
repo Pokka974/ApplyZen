@@ -43,11 +43,58 @@ export interface UserProfile {
 
 export type ExperienceLevel = '0-1' | '1-3' | '3-5' | '5-10' | '10+';
 
+// Template Types
+export interface CvTemplate {
+  id: string;
+  name: string;
+  description: string;
+  previewUrl: string;
+  category: TemplateCategory;
+  isPremium: boolean;
+  htmlContent: string;
+  cssContent: string;
+  placeholders: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TemplateConfig {
+  id: string;
+  name: string;
+  description: string;
+  category: TemplateCategory;
+  isPremium: boolean;
+  features: string[];
+  placeholders: TemplatePlaceholder[];
+}
+
+export interface TemplatePlaceholder {
+  key: string;
+  label: string;
+  type: 'text' | 'html' | 'list' | 'date';
+  required: boolean;
+  defaultValue?: string;
+}
+
+export interface TemplatePreview {
+  id: string;
+  name: string;
+  description: string;
+  previewUrl: string;
+  thumbnailUrl: string;
+  category: TemplateCategory;
+  isPremium: boolean;
+  features: string[];
+}
+
+export type TemplateCategory = 'classique' | 'moderne' | 'creatif' | 'professionnel' | 'minimaliste';
+
 // Document Generation Types
 export interface DocumentGenerationRequest {
   jobData: JobData;
   profile: UserProfile;
   type: DocumentType;
+  templateId?: string;
 }
 
 export type DocumentType = 'cv' | 'cover-letter' | 'both';
@@ -58,6 +105,7 @@ export interface GeneratedDocument {
   language: SupportedLanguage;
   wordCount: number;
   generatedAt: string;
+  templateId?: string;
 }
 
 export interface DocumentsResponse {
@@ -129,6 +177,18 @@ export interface RegisterRequest {
 export interface AuthResponse {
   user: AuthUser;
   token: string;
+}
+
+export interface TemplateListResponse {
+  templates: TemplatePreview[];
+  success: boolean;
+  error?: string;
+}
+
+export interface TemplateResponse {
+  template: CvTemplate;
+  success: boolean;
+  error?: string;
 }
 
 // Database Entity Types

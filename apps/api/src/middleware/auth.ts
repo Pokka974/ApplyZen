@@ -86,7 +86,7 @@ export const checkUsageLimit = async (req: Request, res: Response, next: NextFun
   return next();
 };
 
-export const incrementUsage = async (userId: string, incrementBy: number = 1) => {
+export const incrementUsage = async (userId: string, incrementBy = 1) => {
   await prisma.user.update({
     where: { id: userId },
     data: {
